@@ -16,5 +16,10 @@
     "storage",
     "activeTab",
     "*://*.wheelofnames.com/*"
-  ]
+  ],
+  "browser_specific_settings": {
+  "gecko": {
+    "id": "krzys.jachowicz@gmail.com"
+  }
+}
 }

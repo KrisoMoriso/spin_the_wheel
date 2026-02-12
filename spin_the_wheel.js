@@ -36,13 +36,13 @@ var list_2 = [
     "Krzysztof Z"
 ]
 browser.storage.local.get("excluded_names").then(x =>{
-    if (x){
+    if (x.excluded_names == undefined){
         browser.storage.local.set({excluded_names:[]})
     }
 })
 
 browser.storage.local.get("list_number").then(x =>{
-    if (x){
+    if (x.list_number == undefined){
         browser.storage.local.set({list_number: 3})
     }
 })
