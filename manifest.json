@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "Spin the wheel",
+  "version": "1.0",
+
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.wheelofnames.com/*"],
+      "js": ["spin_the_wheel.js"]
+    }
+  ],
+  "browser_action":{
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab"
+  ]
+}
