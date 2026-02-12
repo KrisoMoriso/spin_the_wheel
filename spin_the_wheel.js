@@ -1,12 +1,51 @@
 var list_1 = [
-    "Kris",
-    "Kajetan"
+    "Adam",
+    "Franek",
+    "Iza",
+    "Janek T",
+    "Maja",
+    "Karolina",
+    "Krzysztof J",
+    "Laura",
+    "Marcel",
+    "Maria",
+    "Mateusz",
+    "Michał",
+    "Mihei",
+    "Monika",
+    "Oliwier",
+    "Zuza"
 ]
 var list_2 = [
-    "Maja",
-    "Olek"
+    "Janek B",
+    "Felek",
+    "Julian",
+    "Jakub W",
+    "Jeremi",
+    "Kajetan",
+    "Olek B",
+    "Piotr",
+    "Jakub M",
+    "Nadia",
+    "Weronika",
+    "Rafal",
+    "Wojtek",
+    "Hania",
+    "Alex G",
+    "Ksawery",
+    "Krzysztof Z"
 ]
-browser.storage.local.set({excluded_names:["Krzysztof"]})
+browser.storage.local.get("excluded_names").then(x =>{
+    if (x == null){
+        browser.storage.local.set({excluded_names:[]})
+    }
+})
+
+browser.storage.local.get("list_number").then(x =>{
+    if (x == null){
+        browser.storage.local.set({list_number: 3})
+    }
+})
 
 setTimeout(function(){
 
@@ -35,9 +74,6 @@ setTimeout(function(){
     page_div.appendChild(button_list_3)
     button_list_3.addEventListener('click', button_list_3_listener)
 
-
-    
-    
     var textbox_exclude = document.createElement("textarea")
     textbox_exclude.className = "my-textbox q-textbox"
     textbox_exclude.style.position = "flex"
@@ -46,13 +82,21 @@ setTimeout(function(){
     var button_exclude = document.createElement("button")
     button_exclude.className = "my-button q-btn"
     button_exclude.style.position = "flex"
-    button_exclude.textContent = "exclude"
+    button_exclude.textContent = "exclude from list"
     page_div.appendChild(button_exclude)
-    button_exclude.addEventListener('click', ()=>
-        {
-            console.log(textbox_exclude.value)
-        }
+    button_exclude.addEventListener('click', button_exclude_listener)
+
+    var button_reset = document.createElement("button")
+    button_reset.className = "my-button q-btn"
+    button_reset.style.position = "flex"
+    button_reset.textContent = "reset list"
+    page_div.appendChild(button_reset)
+    button_reset.addEventListener('click', () =>{
+        browser.storage.local.set({excluded_names:[]})
+    }
     )
+
+    
 }, 500);
 
 function check() {
@@ -81,6 +125,7 @@ function button_list_1_listener(){
                 }
         });
         put_names_in(new_list)
+        browser.storage.local.set({list_number: 1})
     })
 }
 function button_list_2_listener(){
@@ -97,6 +142,7 @@ function button_list_2_listener(){
                 }
         });
         put_names_in(new_list)
+        browser.storage.local.set({list_number:2})
     })
 }
 function button_list_3_listener(){
@@ -117,6 +163,7 @@ function button_list_3_listener(){
                 }
         });
         put_names_in(new_list)
+        browser.storage.local.set({list_number: 3})
     })
 }
 function put_names_in (names_list ){
@@ -132,3 +179,26 @@ function put_names_in (names_list ){
         textbox.dispatchEvent(blurEvent)
 }
 
+async function button_exclude_listener(){
+    var textbox_exclude = document.querySelector('.my-textbox')
+    var name_to_exclude = textbox_exclude.value
+    browser.storage.local.get("excluded_names").then(x => {
+        var excluded_names_list = x.excluded_names
+        excluded_names_list.push(name_to_exclude)
+        browser.storage.local.set({excluded_names:excluded_names_list})
+
+        browser.storage.local.get("list_number").then(list_number => {
+            console.log(list_number)
+            if (list_number.list_number == "1"){
+                console.log(1)
+                button_list_1_listener()
+            } else if (list_number.list_number == "2"){
+                console.log(2)
+                button_list_2_listener()
+            } else if (list_number.list_number == "3"){
+                console.log(3)
+                button_list_3_listener()
+            }
+        })
+    })
+}
